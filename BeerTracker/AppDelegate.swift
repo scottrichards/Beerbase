@@ -16,6 +16,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
   func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
     // Override point for customization after application launch.
+    
+    // If the data model filename (Beer) is identical to the Project name (BeerTracker), the following convenience method can be used instead.
+    //MagicalRecord.setupCoreDataStack()
+    MagicalRecord.setupCoreDataStackWithStoreNamed("Beer")
+    
     return true
   }
 
