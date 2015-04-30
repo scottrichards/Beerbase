@@ -38,7 +38,8 @@ class BeerListViewController: UITableViewController {
       
       let beerSelected = beers[indexPath!.row]
       controller!.currentBeer = beerSelected
-      controller!.currentBeerDetails = beerSelected.beerDetails
+      //controller!.currentBeerDetails = beerSelected.beerDetails
+      controller!.currentBeer.beerDetails = beerSelected.beerDetails
       
       //------------------------------------------------------------------------------------
     } else if segue.identifier == "addBeer" {

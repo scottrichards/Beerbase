@@ -15,9 +15,9 @@ import CoreData
 class BeerDetails: NSManagedObject {
 
   // Attributes
-  @NSManaged var image: String
-  @NSManaged var note: String
-  @NSManaged var rating: NSNumber
+  @NSManaged var image: String?
+  @NSManaged var note: String?
+  @NSManaged var rating: NSNumber?
   
   // Relationships
   @NSManaged var beer: Beer

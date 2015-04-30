@@ -20,7 +20,7 @@ class BeerDetailViewController: UITableViewController {
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var addPhotoLabel: UILabel!
   
-  //var image: UIImage?   // If no photo is picked yet, image is nil, so this must be an optional.
+  //var image: UIImage?   // If no photo has been picked yet, image is nil, so the variable must be an optional.
   
   // Set up a "Property Observer" using a "didSet block" instead of just declaring the variable as above.
   // The code in the didSet block is performed whenever the variable is assigned a new value.
@@ -36,9 +36,7 @@ class BeerDetailViewController: UITableViewController {
   }
   //------------------------------------------
   var currentBeer: Beer!
-  var currentBeerDetails: BeerDetails!
-  
-  //var beerRecords: [Beer]!
+  //var currentBeerDetails: BeerDetails!
   
   //#####################################################################
   // MARK: - Segues
@@ -48,7 +46,7 @@ class BeerDetailViewController: UITableViewController {
     // The segue’s destinationViewController is the PhotoViewController, not a UINavigationController.
     
     // "destinationViewController" must be cast from its generic type (AnyObject) to the specific type used in this app
-    // (CategoryPickerViewController) before any of its properties can be accessed.
+    // (PhotoViewController) before any of its properties can be accessed.
     let controller = segue.destinationViewController as! PhotoViewController
     
     controller.image = imageView.image
@@ -93,17 +91,85 @@ class BeerDetailViewController: UITableViewController {
       
       currentBeer = Beer.createEntity() as! Beer
       currentBeer.name = ""
+    }
+    //------------------------------------------
+    let details: BeerDetails? = currentBeer.beerDetails
+    
+    if let bDetails = details {
+      // Beer Details exist.  EDIT Mode.
+      
+    } else {
+      // Beer Details do NOT exist.  Either ADD Mode or EDIT Mode with a beer that has no details.
       
       currentBeer.beerDetails = BeerDetails.createEntity() as! BeerDetails
-      currentBeer.beerDetails.note = ""
     }
     //------------------------------------------
     // Update user interface with attribute values.
     
-    beerNameTextField.text = currentBeer.name
+    //--------------------
+    // BEER NAME
     
-    if let details = currentBeerDetails {
-      beerNotesView.text = details.note
+    let cbName: String? = currentBeer.name
+    
+    if let bName = cbName {
+      beerNameTextField.text = bName
+    }
+    //--------------------
+    // BEER NOTE
+    
+    if let bdNote = details?.note {
+      beerNotesView.text = bdNote
+    }
+    //--------------------
+    // BEER IMAGE
+    
+    if let beerImagePath = details?.image {
+      
+      let beerImage = UIImage(contentsOfFile: beerImagePath)
+      
+      if let bImage = beerImage {
+        showImage(bImage)
+      }
+      
+      //let fileMgr = NSFileManager.defaultManager()
+      /*
+      if fileMgr.fileExistsAtPath(beerImagePath) {
+        let image: UIImage? = UIImage(contentsOfFile: beerImagePath)
+        if let beerImage = image {
+          // An image exists.
+          showImage(beerImage)
+        }
+      }
+      */
+      /*
+      let image: UIImage? = UIImage(contentsOfFile: beerImagePath)
+      if let beerImage = image {
+        // An image exists.
+        showImage(beerImage)
+      }
+      */
+      /*
+      let image: UIImage? = UIImage(named: beerImagePath)
+      if let beerImage = image {
+        // An image exists.
+        showImage(beerImage)
+      }
+      */
+      /*
+      var image: UIImage? = UIImage(named: beerImagePath)
+      if let beerImage = image {
+        // An image exists.
+        showImage(beerImage)
+      }
+      */
+      /*
+      var image: UIImage = UIImage(named: "/Users/Ed/Library/Developer/CoreSimulator/Devices/31B79762-F078-456B-8B4C-34BF25E7BD61/data/Containers/Data/Application/60195229-75F3-44EE-B264-850DA6214D32/Documents/68F282D8-3473-4335-A878-121B952C1172.jpg")!
+
+      if let beerImage = image {
+        // An image exists.
+        showImage(beerImage)
+      }
+      */
     }
     //------------------------------------------
     // Set scene title.
@@ -223,7 +289,7 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     // Under normal circumstances this optional, info[UIImagePickerControllerEditedImage], would be unwrapped,
     // but here the image instance variable is an optional itself so no unwrapping is necessary.
     
-    // Use he UIImagePickerControllerEditedImage key to retrieve a UIImage object that contains the image after the Move and Scale operations on the original image.
+    // Use the UIImagePickerControllerEditedImage key to retrieve a UIImage object that contains the image after the Move and Scale operations on the original image.
     //image = info[UIImagePickerControllerEditedImage] as UIImage?
     image = info[UIImagePickerControllerEditedImage] as! UIImage?
     
@@ -235,7 +301,19 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     showImage(image)
     }
     */
+
+    //------------------------------------------
+    if let imageToDelete = currentBeer.beerDetails.image {
+      ImageSaver.deleteImageAtPath(imageToDelete)
+    }
     
+    //------------------------------------------
+    // TODO: Is forced unwrapping safe to use here?
+    if ImageSaver.saveImageToDisk(image!, andToBeer: currentBeer) {
+      showImage(image!)
+    }
+    
+    //------------------------------------------
     // Refresh the table view to set the photo row to the proper height to accommodate a photo (or not).
     tableView.reloadData()
     
@@ -253,7 +331,8 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
   
   func pickPhoto() {
     
-    if true || UIImagePickerController.isSourceTypeAvailable(.Camera) {  // Adding "true ||" introduces into the iOS Simulator fake availability of the camera.
+    // Adding "true ||" introduces into the iOS Simulator fake availability of the camera.
+    if true || UIImagePickerController.isSourceTypeAvailable(.Camera) {
       //if UIImagePickerController.isSourceTypeAvailable(.Camera) {
       // The user's device has a camera.
       showPhotoMenu()
@@ -339,13 +418,13 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     
     // By default, an image view will stretch the image to fit the entire content area.
     // To keep the image's aspect ratio intact as it is resized, in the storyboard set the Image View's MODE to Aspect Fit.
-    // Properly size the image view within the Add Photo table view cell.
-    //imageView.frame = CGRect(x: 10, y: 10, width: 260, height: 260)
+    // Properly size the image view within the Beer Name table view cell.
+    //imageView.frame = CGRect(x: 16, y: 18, width: 65, height: 65)
     
-    //let imageAspectRatio = image.size.width / image.size.height
-    //let imageViewFrameHeight = 260 / imageAspectRatio
+    let imageAspectRatio = image.size.width / image.size.height
+    let imageViewFrameHeight = 65 / imageAspectRatio
     
-    //imageView.frame = CGRect(x: 10, y:10, width: 260, height: imageViewFrameHeight)
+    imageView.frame = CGRect(x: 16, y:18, width: 65, height: imageViewFrameHeight)
     
     //--------------------
     // Hide the label that prompts the user to add a photo.
