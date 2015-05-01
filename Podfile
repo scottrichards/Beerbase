@@ -4,8 +4,9 @@ source 'https://github.com/CocoaPods/Specs.git'
 platform :ios, '8.0'
 
 target 'BeerTracker' do
-# Add a dependency
+# Add dependencies
 pod 'MagicalRecord/Shorthand'
+pod 'AMRatingControl', '~> 1.3.0'
 end
 
 target 'BeerTrackerTests' do

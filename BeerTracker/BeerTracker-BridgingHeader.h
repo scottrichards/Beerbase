@@ -14,5 +14,6 @@
 // &lt; = <  and  $gt; = >
 //#import &lt;CoreData+MagicalRecord.h&gt;
 #import <CoreData+MagicalRecord.h>
+#import <AMRatingControl.h>
 
 #endif

@@ -4,6 +4,11 @@
 <dict>
 	<key>SchemeUserState</key>
 	<dict>
+		<key>Pods-BeerTracker-AMRatingControl.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Pods-BeerTracker-MagicalRecord.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -17,12 +22,17 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>9F07FEC0146DFC5B3E0B195E</key>
+		<key>080D90B78AD60172F9D02A79</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D0EBB3EE9248B583B8B5FAB2</key>
+		<key>27F45C351E915A964C7A9CB7</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>82E8076A93B167ADA9AA89A0</key>
 		<dict>
 			<key>primary</key>
 			<true/>
