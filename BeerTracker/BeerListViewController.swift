@@ -12,6 +12,7 @@ import Foundation
 class BeerListViewController: UITableViewController {
 
   @IBOutlet weak var sortByControl: UISegmentedControl!
+  @IBOutlet weak var searchBar: UISearchBar!
   
   //var beers: [Beer] = []
   var beers: [Beer]!
@@ -218,53 +219,54 @@ extension BeerListViewController: UITableViewDataSource {
 
 extension BeerListViewController: UISearchBarDelegate {
   
-  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
-    // This method is invoked when the user taps the Search button on the keyboard.
-    performSearch()
+  // MARK: Editing Text
+  
+  func searchBar(searchBar: UISearchBar, textDidChange searchText: String) {
+    
+    if searchBar.text != "" {
+      performSearch()
+      
+    } else {
+      fetchAllBeers()
+      tableView.reloadData()
+    }
   }
   //#####################################################################
   
-  func performSearch() {
-    // This method is invoked when the user taps a) the Search button on the keyboard OR b) the Segmented Control.
+  func searchBarTextDidBeginEditing(searchBar: UISearchBar) {
+    searchBar.showsCancelButton = true
+  }
+  //#####################################################################
+  // MARK: Clicking Buttons
+  
+  func searchBarCancelButtonClicked(searchBar: UISearchBar) {
     
-    // To convert the Int value from selectedSegmentIndex to an item from the Category enum, the built-in init(rawValue) method is used.
-    // This may fail, for example, when passing in a number that isn’t covered by one of Category’s cases (i.e. anything that is outside the range 0 to 3).
-    // That is why init(rawValue) returns an optional that needs to be unwrapped before it can be used.
-/*
-    if let category = Search.Category(rawValue: segmentedControl.selectedSegmentIndex) {
-      
-      search.performSearchForText(searchBar.text, category: category, completion: {
-        success in
-        
-        // The code in this closure gets called after the search completes, with the success parameter being either true or false.
-        // The closure is always called on the main thread, so it’s safe to use UI code here.
-        
-        if !success {
-          self.showNetworkError()
-        }
-        
-        self.tableView.reloadData()
-        
-        // Fake a network error to verify that network errors are handled correctly in landscape mode.
-        // Set the Network Link Conditioner Profile to "100% Loss", then run the app.
-        // Put the app to sleep for 5 seconds to allow time to turn the device to landscape mode following the initiation of a search.
-        //sleep(5)
-        
-        if let controller = self.landscapeViewController {
-          // The device was rotated to landscape mode after the search was initiated from portrait mode.
-          
-          // Notify the landscapeViewController of the search completion.
-          controller.searchResultsReceived()
-        }
-      })
-      //------------------------------------------
-      // Reload the table view to show the activity spinner.
-      tableView.reloadData()
-      
-      // Hide the keyboard.
-      searchBar.resignFirstResponder()
-    }
-*/
+    searchBar.resignFirstResponder()
+    searchBar.text = ""
+    searchBar.showsCancelButton = false
+    fetchAllBeers()
+    tableView.reloadData()
+  }
+  //#####################################################################
+
+  func searchBarSearchButtonClicked(searchBar: UISearchBar) {
+    // This method is invoked when the user taps the Search button on the keyboard.
+    
+    searchBar.resignFirstResponder()
+    performSearch()
+  }
+  //#####################################################################
+  // MARK: Helper Methods
+  
+  func performSearch() {
+    
+    let searchText = searchBar.text
+    let filterCriteria = NSPredicate(format: "name contains[c] %@", searchText)
+    
+    beers = Beer.findAllSortedBy("name", ascending: true,
+                                     withPredicate: filterCriteria,
+                                         inContext: NSManagedObjectContext.defaultContext()) as? [Beer]
+    tableView.reloadData()
   }
   //#####################################################################
   // MARK: - Bar Positioning Delegate

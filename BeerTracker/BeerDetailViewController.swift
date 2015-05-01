@@ -130,46 +130,6 @@ class BeerDetailViewController: UITableViewController {
       if let bImage = beerImage {
         showImage(bImage)
       }
-      
-      //let fileMgr = NSFileManager.defaultManager()
-      /*
-      if fileMgr.fileExistsAtPath(beerImagePath) {
-        let image: UIImage? = UIImage(contentsOfFile: beerImagePath)
-        if let beerImage = image {
-          // An image exists.
-          showImage(beerImage)
-        }
-      }
-      */
-      /*
-      let image: UIImage? = UIImage(contentsOfFile: beerImagePath)
-      if let beerImage = image {
-        // An image exists.
-        showImage(beerImage)
-      }
-      */
-      /*
-      let image: UIImage? = UIImage(named: beerImagePath)
-      if let beerImage = image {
-        // An image exists.
-        showImage(beerImage)
-      }
-      */
-      /*
-      var image: UIImage? = UIImage(named: beerImagePath)
-      if let beerImage = image {
-        // An image exists.
-        showImage(beerImage)
-      }
-      */
-      /*
-      var image: UIImage = UIImage(named: "/Users/Ed/Library/Developer/CoreSimulator/Devices/31B79762-F078-456B-8B4C-34BF25E7BD61/data/Containers/Data/Application/60195229-75F3-44EE-B264-850DA6214D32/Documents/68F282D8-3473-4335-A878-121B952C1172.jpg")!
-
-      if let beerImage = image {
-        // An image exists.
-        showImage(beerImage)
-      }
-      */
     }
     //------------------------------------------
     // Set scene title.
