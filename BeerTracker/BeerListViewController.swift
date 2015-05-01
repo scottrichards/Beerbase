@@ -17,6 +17,10 @@ class BeerListViewController: UITableViewController {
   //var beers: [Beer] = []
   var beers: [Beer]!
   
+  let SORT_KEY_NAME   = "name"
+  let SORT_KEY_RATING = "beerDetails.rating"
+  let WB_SORT_KEY     = "WB_SORT_KEY"
+
   //#####################################################################
   // MARK: - Segues
   
@@ -113,8 +117,8 @@ class BeerListViewController: UITableViewController {
     
     //let standardDefaults = NSUserDefaults.standardUserDefaults()
     //let sortKey = standardDefaults.objectForKey("WB_SORT_KEY") as? String
-    let sortKey = NSUserDefaults.standardUserDefaults().objectForKey("WB_SORT_KEY") as? String
-    let ascending = (sortKey == "beerDetails.rating") ? false : true
+    let sortKey = NSUserDefaults.standardUserDefaults().objectForKey(WB_SORT_KEY) as? String
+    let ascending = (sortKey == SORT_KEY_RATING) ? false : true
     
     // Fetch records from Entity Beer using a MagicalRecord method.
     //beers = (Beer.findAllSortedBy(sortKey, ascending: ascending) as? [Beer])!
@@ -263,9 +267,9 @@ extension BeerListViewController: UISearchBarDelegate {
     let searchText = searchBar.text
     let filterCriteria = NSPredicate(format: "name contains[c] %@", searchText)
     
-    beers = Beer.findAllSortedBy("name", ascending: true,
-                                     withPredicate: filterCriteria,
-                                         inContext: NSManagedObjectContext.defaultContext()) as? [Beer]
+    beers = Beer.findAllSortedBy(SORT_KEY_NAME, ascending: true,
+                                            withPredicate: filterCriteria,
+                                                inContext: NSManagedObjectContext.defaultContext()) as? [Beer]
     tableView.reloadData()
   }
   //#####################################################################
