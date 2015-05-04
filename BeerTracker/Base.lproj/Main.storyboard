@@ -160,9 +160,9 @@
                         <outlet property="addPhotoLabel" destination="zE0-bA-SwE" id="4dw-OK-r0m"/>
                         <outlet property="beerNameTextField" destination="Sam-Df-yTa" id="PX2-j8-CGP"/>
                         <outlet property="beerNotesView" destination="U9r-a5-cpb" id="YhE-Wa-PF5"/>
-                        <outlet property="cellOne" destination="DRD-49-5DV" id="K5S-TV-Api"/>
+                        <outlet property="cellNameRatingImage" destination="DRD-49-5DV" id="k8j-FF-vKt"/>
                         <outlet property="imageView" destination="tTk-bN-jdd" id="AqU-jn-Eb1"/>
-                        <segue destination="MK2-75-q3c" kind="show" id="9S9-1K-Cjh"/>
+                        <segue destination="MK2-75-q3c" kind="show" identifier="showImage" id="9S9-1K-Cjh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lxX-pC-Mkm" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -15,7 +15,7 @@ import Foundation
 //         The code is run only the very first time the object is needed in the app (a.k.a. lazy loading).
 //         "Global" constants can be used outside of this Swift file since they do not belong to a class.
 
-// Assign to a global constant a parth to the app's Documents directory.
+// Assign to a global constant a path to the app's Documents directory.
 let applicationDocumentsDirectory: String = {
   let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as! [String]
   return paths[0]

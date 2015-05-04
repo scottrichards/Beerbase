@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		2B73EDBF8BF49222D7FD39CA /* libPods-BeerTracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 544965BBF825C0D70A032508 /* libPods-BeerTracker.a */; };
 		641E779B1AF16F4800D03DFA /* ImageSaver.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641E779A1AF16F4800D03DFA /* ImageSaver.swift */; };
 		641E779D1AF1748400D03DFA /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 641E779C1AF1748400D03DFA /* Functions.swift */; };
 		64CE5A741AEC43220067147E /* Beer.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 64CE5A721AEC43220067147E /* Beer.xcdatamodeld */; };
@@ -24,7 +25,6 @@
 		64D7F3921AEA838100C95E20 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 64D7F3911AEA838100C95E20 /* Images.xcassets */; };
 		64D7F3951AEA838100C95E20 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 64D7F3931AEA838100C95E20 /* LaunchScreen.xib */; };
 		64D7F3A11AEA838100C95E20 /* BeerTrackerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64D7F3A01AEA838100C95E20 /* BeerTrackerTests.swift */; };
-		F5AB0FA5EA5F1C8894F047A5 /* libPods-BeerTracker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6ACE7301E4A093A76214913C /* libPods-BeerTracker.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -40,6 +40,7 @@
 /* Begin PBXFileReference section */
 		30195B9BFC9D2D7EE4A8C045 /* Pods-BeerTracker.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerTracker.debug.xcconfig"; path = "Pods/Target Support Files/Pods-BeerTracker/Pods-BeerTracker.debug.xcconfig"; sourceTree = "<group>"; };
 		32F0D7582D059C9022AFEBA3 /* Pods-BeerTracker.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BeerTracker.release.xcconfig"; path = "Pods/Target Support Files/Pods-BeerTracker/Pods-BeerTracker.release.xcconfig"; sourceTree = "<group>"; };
+		544965BBF825C0D70A032508 /* libPods-BeerTracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeerTracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		641E779A1AF16F4800D03DFA /* ImageSaver.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageSaver.swift; sourceTree = "<group>"; };
 		641E779C1AF1748400D03DFA /* Functions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		64CE5A711AEC3A8F0067147E /* BeerTracker-BridgingHeader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "BeerTracker-BridgingHeader.h"; sourceTree = "<group>"; };
@@ -62,7 +63,6 @@
 		64D7F39A1AEA838100C95E20 /* BeerTrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = BeerTrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D7F39F1AEA838100C95E20 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		64D7F3A01AEA838100C95E20 /* BeerTrackerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerTrackerTests.swift; sourceTree = "<group>"; };
-		6ACE7301E4A093A76214913C /* libPods-BeerTracker.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-BeerTracker.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -70,7 +70,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F5AB0FA5EA5F1C8894F047A5 /* libPods-BeerTracker.a in Frameworks */,
+				2B73EDBF8BF49222D7FD39CA /* libPods-BeerTracker.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -87,7 +87,7 @@
 		52C2F0FAAC322D532C0F2E2F /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				6ACE7301E4A093A76214913C /* libPods-BeerTracker.a */,
+				544965BBF825C0D70A032508 /* libPods-BeerTracker.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";

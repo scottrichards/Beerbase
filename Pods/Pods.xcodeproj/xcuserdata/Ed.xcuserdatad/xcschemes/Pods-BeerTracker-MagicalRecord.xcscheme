@@ -14,7 +14,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "27F45C351E915A964C7A9CB7"
+               BlueprintIdentifier = "2B6B10A71B7AD6F14D988D1E"
                BuildableName = "libPods-BeerTracker-MagicalRecord.a"
                BlueprintName = "Pods-BeerTracker-MagicalRecord"
                ReferencedContainer = "container:Pods.xcodeproj">

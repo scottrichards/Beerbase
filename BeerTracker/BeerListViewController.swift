@@ -14,7 +14,6 @@ class BeerListViewController: UITableViewController {
   @IBOutlet weak var sortByControl: UISegmentedControl!
   @IBOutlet weak var searchBar: UISearchBar!
   
-  //var beers: [Beer] = []
   var beers: [Beer]!
   
   let SORT_KEY_NAME   = "name"
@@ -32,48 +31,19 @@ class BeerListViewController: UITableViewController {
     let controller = segue.destinationViewController as? BeerDetailViewController
     
     if segue.identifier == "editBeer" {
-      // The segue’s destinationViewController is the ChecklistViewController, not a UINavigationController.
-      // The segue from ChecklistVC to ItemDetailVC is to a modally-presented VC that is embedded inside a nav controller.
-      
-      // "as Checklist" is a TYPE CAST, which tells Swift to interpret the value as having a data type of "Checklist".
-      // "sender" is passed to this method with type "AnyObject", which means it can be anything (including "nil" given the "!").
-      //controller.checklist = sender as Checklist
       
       let indexPath = tableView.indexPathForSelectedRow()
       
       let beerSelected = beers[indexPath!.row]
       controller!.currentBeer = beerSelected
-      //controller!.currentBeerDetails = beerSelected.beerDetails
       controller!.currentBeer.beerDetails = beerSelected.beerDetails
       
-      //------------------------------------------------------------------------------------
+    //------------------------------------------------------------------------------------
     } else if segue.identifier == "addBeer" {
-      // Tell BeerDetailViewController that BeerListViewController is now its delegate.
-      
-      // The segue does not go directly to BeerDetailViewController but to the navigation controller that embeds it.
-      // First, set up a constant to represent this UINavigationController object.
-      //let navigationController = segue.destinationViewController as? UINavigationController
-      
-      // To find the BeerDetailViewController, look at the navigation controller’s topViewController property.
-      // This property refers to the screen that is currently active inside the navigation controller.
-      //let controller = navigationController!.topViewController as! BeerDetailViewController
-      
-      // Given the reference (controller) to the BeerDetailViewController object, set its delegate property to self to complete the connection.
-      //controller.delegate = self
       
       controller!.navigationItem.leftBarButtonItem  = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: controller, action: "cancelAdd")
       controller!.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",   style: UIBarButtonItemStyle.Done,  target: controller, action: "addNewBeer")
-      
-      //------------------------------------------
-      // ADD Mode Setup
-      
-      // Set BeerDetailViewController Property, beerToEdit, to nil to indicate ADD mode.
-      //controller.beerToEdit = nil
     }
-    // NOTE: Instead of using a segue for editing a checklist, the new view controller is being loaded manually from the storyboard
-    //       in table view delegate method, tableView(accessoryButtonTappedForRowWithIndexPath).
-    
-    
   }
   //#####################################################################
   // MARK: - UIViewController - Responding to View Events
@@ -99,9 +69,6 @@ class BeerListViewController: UITableViewController {
     //------------------------------------------
     
     tableView.contentOffset = CGPointMake(0, 44)
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem()
   }
   //#####################################################################
   // MARK: - Action Methods
@@ -115,13 +82,10 @@ class BeerListViewController: UITableViewController {
   
   func fetchAllBeers() {
     
-    //let standardDefaults = NSUserDefaults.standardUserDefaults()
-    //let sortKey = standardDefaults.objectForKey("WB_SORT_KEY") as? String
     let sortKey = NSUserDefaults.standardUserDefaults().objectForKey(WB_SORT_KEY) as? String
     let ascending = (sortKey == SORT_KEY_RATING) ? false : true
     
     // Fetch records from Entity Beer using a MagicalRecord method.
-    //beers = (Beer.findAllSortedBy(sortKey, ascending: ascending) as? [Beer])!
     beers = Beer.findAllSortedBy(sortKey, ascending: ascending) as! [Beer]
     
     /*
@@ -160,8 +124,6 @@ extension BeerListViewController: UITableViewDataSource {
 
   override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
     
-    // Create the table view cell in code instead of using prototype cells designed in Interface Builder.
-      
     let cellIdentifier = "Cell"
       
     //------------------------------------------
@@ -185,7 +147,6 @@ extension BeerListViewController: UITableViewDataSource {
   
   func configureCell(cell: UITableViewCell, atIndex indexPath: NSIndexPath) {
     
-    //let beer: Beer = beers[indexPath.row]
     cell.textLabel?.text = beers[indexPath.row].name
   }
   //#####################################################################

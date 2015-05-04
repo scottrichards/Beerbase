@@ -8,11 +8,13 @@
 
 import UIKit
 
+//@objc
+
 class BeerDetailViewController: UITableViewController {
   
   @IBOutlet weak var beerNameTextField: UITextField!
   @IBOutlet weak var beerNotesView: UITextView!
-  @IBOutlet weak var cellOne: UITableViewCell!
+  @IBOutlet weak var cellNameRatingImage: UITableViewCell!
   
   //------------------------------------------
   // Showing the image
@@ -35,13 +37,49 @@ class BeerDetailViewController: UITableViewController {
     }
   }
   //------------------------------------------
-  var currentBeer: Beer!
-  //var currentBeerDetails: BeerDetails!
+  // Rating Control
   
+  @IBOutlet weak var ratingControlOutlet: AMRatingControl!
+  
+  //------------------------------------------
+  var currentBeer: Beer!
+
+  //------------------------------------------
+  // Rating
+  
+  var amRatingCtl: AnyObject!
+  
+  let beerEmptyImage: UIImage = UIImage(named: "beermug-empty")!
+  let beerFullImage:  UIImage = UIImage(named: "beermug-full")!
+  
+  //#####################################################################
+  // MARK: - Initialization
+  
+  required init(coder aDecoder: NSCoder) {
+    
+    amRatingCtl = AMRatingControl(location: CGPointMake(95, 66),
+                                emptyImage: beerEmptyImage,
+                                solidImage: beerFullImage,
+                              andMaxRating: 5)
+
+    // A call to super is required after all variables and constants have been assigned values but before anything else is done.
+    super.init(coder: aDecoder)
+    
+    // Using .EditingChanged does not work.  updateRating does not fire when the rating control is changed.
+    //amRatingCtl.addTarget(self, action: "updateRating", forControlEvents: UIControlEvents.EditingChanged)
+    
+    // This works as well.
+    //amRatingCtl.addTarget(self, action: Selector("updateRating"), forControlEvents: UIControlEvents.TouchUpInside)
+    amRatingCtl.addTarget(self, action: "updateRating", forControlEvents: UIControlEvents.TouchUpInside)
+    
+    // TODO:  Why is this not allowed?
+    //amRatingCtl.starSpacing = 5
+  }
   //#####################################################################
   // MARK: - Segues
   
   override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    // TODO: The Objective-C version of BeerTracker has no way of getting to the PhotoViewController.
     
     // The segue’s destinationViewController is the PhotoViewController, not a UINavigationController.
     
@@ -121,6 +159,14 @@ class BeerDetailViewController: UITableViewController {
       beerNotesView.text = bdNote
     }
     //--------------------
+    // BEER RATING
+    
+    if let bdRating = details?.rating {
+      let theRatingControl = ratingControl()
+      theRatingControl.rating = Int(bdRating)
+      cellNameRatingImage.addSubview(theRatingControl)
+    }
+    //--------------------
     // BEER IMAGE
     
     if let beerImagePath = details?.image {
@@ -180,9 +226,33 @@ class BeerDetailViewController: UITableViewController {
   }
   //#####################################################################
   // MARK: - MagicalRecord Methods
+  //         Third-party Core Data stack.
   
   func saveContext() {
     NSManagedObjectContext.defaultContext().saveToPersistentStoreAndWait()
+  }
+  //#####################################################################
+  // MARK: - Rating Control Methods
+  //         Third-party star rating UIControl.
+  //         Using AMRatingControl - https://www.cocoacontrols.com/controls/amratingcontrol
+
+  func ratingControl() -> AMRatingControl {
+    
+    if let amrc = amRatingCtl as? AMRatingControl {
+      
+      amrc.starSpacing = 5
+      //amrc.addTarget(self, action: "updateRating", forControlEvents: UIControlEvents.EditingChanged)
+    }
+    
+    // This works here, but doing it in init:coder instead.
+    //amRatingCtl.addTarget(self, action: "updateRating", forControlEvents: UIControlEvents.TouchUpInside)
+    
+    return amRatingCtl as! AMRatingControl
+  }
+  //#####################################################################
+  func updateRating() {
+    // TODO: This is a recursive call, which is how it is done in the Objective-C version.  Isn't there a better way to do this?
+    currentBeer.beerDetails.rating = ratingControl().rating
   }
   //#####################################################################
 }
@@ -250,7 +320,6 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     // but here the image instance variable is an optional itself so no unwrapping is necessary.
     
     // Use the UIImagePickerControllerEditedImage key to retrieve a UIImage object that contains the image after the Move and Scale operations on the original image.
-    //image = info[UIImagePickerControllerEditedImage] as UIImage?
     image = info[UIImagePickerControllerEditedImage] as! UIImage?
     
     // THIS CODE WAS REPLACED WITH A didSet BLOCK FOR VARIABLE, image.
@@ -278,22 +347,20 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     tableView.reloadData()
     
     dismissViewControllerAnimated(true, completion: nil)
-    //navigationController?.popViewControllerAnimated(true)
   }
   //#####################################################################
   
   func imagePickerControllerDidCancel(picker: UIImagePickerController) {
     
     dismissViewControllerAnimated(true, completion: nil)
-    //navigationController?.popViewControllerAnimated(true)
   }
   //#####################################################################
   
   func pickPhoto() {
     
-    // Adding "true ||" introduces into the iOS Simulator fake availability of the camera.
     if true || UIImagePickerController.isSourceTypeAvailable(.Camera) {
-      //if UIImagePickerController.isSourceTypeAvailable(.Camera) {
+      // Adding "true ||" introduces into the iOS Simulator fake availability of the camera.
+
       // The user's device has a camera.
       showPhotoMenu()
       
@@ -328,7 +395,6 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
   func takePhotoWithCamera() {
     
     let imagePicker = UIImagePickerController()
-    //let imagePicker = MyImagePickerController()
     
     imagePicker.sourceType = .Camera
     
@@ -348,7 +414,6 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
   func choosePhotoFromLibrary() {
     
     let imagePicker = UIImagePickerController()
-    //let imagePicker = MyImagePickerController()
     
     imagePicker.sourceType = .PhotoLibrary
     
