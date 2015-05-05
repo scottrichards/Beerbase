@@ -20,6 +20,28 @@ class BeerListViewController: UITableViewController {
   let SORT_KEY_RATING = "beerDetails.rating"
   let WB_SORT_KEY     = "WB_SORT_KEY"
 
+  //------------------------------------------
+  // Rating
+  
+  var amRatingCtl: AnyObject!
+  
+  let beerEmptyImage: UIImage = UIImage(named: "beermug-empty")!
+  let beerFullImage:  UIImage = UIImage(named: "beermug-full")!
+  
+  //#####################################################################
+  // MARK: - Initialization
+  
+  required init(coder aDecoder: NSCoder) {
+    // Automatically invoked by UIKit as it loads the view controller from the storyboard.
+    
+    amRatingCtl = AMRatingControl(location: CGPointMake(100, 10),
+                                emptyImage: beerEmptyImage,
+                                solidImage: beerFullImage,
+                              andMaxRating: 5)
+    
+    // A call to super is required after all variables and constants have been assigned values but before anything else is done.
+    super.init(coder: aDecoder)
+  }
   //#####################################################################
   // MARK: - Segues
   
@@ -41,8 +63,15 @@ class BeerListViewController: UITableViewController {
     //------------------------------------------------------------------------------------
     } else if segue.identifier == "addBeer" {
       
-      controller!.navigationItem.leftBarButtonItem  = UIBarButtonItem(title: "Cancel", style: UIBarButtonItemStyle.Plain, target: controller, action: "cancelAdd")
-      controller!.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",   style: UIBarButtonItemStyle.Done,  target: controller, action: "addNewBeer")
+      controller!.navigationItem.leftBarButtonItem  = UIBarButtonItem(title: "Cancel",
+                                                                      style: UIBarButtonItemStyle.Plain,
+                                                                     target: controller,
+                                                                     action: "cancelAdd")
+      
+      controller!.navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Done",
+                                                                      style: UIBarButtonItemStyle.Done,
+                                                                     target: controller,
+                                                                     action: "addNewBeer")
     }
   }
   //#####################################################################
@@ -76,6 +105,22 @@ class BeerListViewController: UITableViewController {
   @IBAction func sortByControlChanged(sender: UISegmentedControl) {
     //println("Segment changed: \(sender.selectedSegmentIndex)")
     performSearch()
+    
+    switch sender.selectedSegmentIndex {
+      
+    case 0:
+      NSUserDefaults.standardUserDefaults().setObject(SORT_KEY_RATING, forKey: WB_SORT_KEY)
+      fetchAllBeers()
+      tableView.reloadData()
+
+    case 1:
+      NSUserDefaults.standardUserDefaults().setObject(SORT_KEY_NAME, forKey: WB_SORT_KEY)
+      fetchAllBeers()
+      tableView.reloadData()
+
+    default:
+      break
+    }
   }
   //#####################################################################
   // MARK: - MagicalRecord Methods
@@ -147,7 +192,29 @@ extension BeerListViewController: UITableViewDataSource {
   
   func configureCell(cell: UITableViewCell, atIndex indexPath: NSIndexPath) {
     
-    cell.textLabel?.text = beers[indexPath.row].name
+    let currentBeer = beers[indexPath.row]
+    cell.textLabel?.text = currentBeer.name
+    
+    //------------------------------------------
+    // Rating Control
+    
+    if let amrc = amRatingCtl as? AMRatingControl {
+      
+      if !(cell.viewWithTag(20) != nil) {
+        
+        amrc.tag = 20
+        amrc.autoresizingMask = UIViewAutoresizing.FlexibleLeftMargin
+        amrc.userInteractionEnabled = false
+        
+        // TODO: This gets executed but no images show up in the cell.
+        cell.addSubview(amrc)
+
+      } else {
+        amRatingCtl = cell.viewWithTag(20)
+      }
+      //----------------------
+      amrc.rating = Int(currentBeer.beerDetails.rating!)
+    }
   }
   //#####################################################################
   // MARK: Inserting or Deleting Table Rows

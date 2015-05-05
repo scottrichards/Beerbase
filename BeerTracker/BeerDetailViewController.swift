@@ -56,7 +56,8 @@ class BeerDetailViewController: UITableViewController {
   // MARK: - Initialization
   
   required init(coder aDecoder: NSCoder) {
-    
+    // Automatically invoked by UIKit as it loads the view controller from the storyboard.
+
     amRatingCtl = AMRatingControl(location: CGPointMake(95, 66),
                                 emptyImage: beerEmptyImage,
                                 solidImage: beerFullImage,
