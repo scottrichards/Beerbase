@@ -8,8 +8,6 @@
 
 import UIKit
 
-//@objc
-
 class BeerDetailViewController: UITableViewController {
   
   @IBOutlet weak var beerNameTextField: UITextField!
@@ -22,9 +20,8 @@ class BeerDetailViewController: UITableViewController {
   @IBOutlet weak var imageView: UIImageView!
   @IBOutlet weak var addPhotoLabel: UILabel!
   
-  //var image: UIImage?   // If no photo has been picked yet, image is nil, so the variable must be an optional.
-  
-  // Set up a "Property Observer" using a "didSet block" instead of just declaring the variable as above.
+  // Set up a "Property Observer" using a "didSet block" instead of just declaring the variable like this:
+  //    var image: UIImage?
   // The code in the didSet block is performed whenever the variable is assigned a new value.
   
   var image: UIImage? {
@@ -46,6 +43,9 @@ class BeerDetailViewController: UITableViewController {
 
   //------------------------------------------
   // Rating
+  
+  // When properties of a Swift class are created, the bridging header is not yet in scope.
+  // Therefore, properties related to the bridging header must be declared with type AnyObject!
   
   var amRatingCtl: AnyObject!
   
@@ -90,22 +90,6 @@ class BeerDetailViewController: UITableViewController {
     
     controller.image = imageView.image
   }
-  /*
-  //#####################################################################
-  // MARK: - Unwind Segues
-  
-  // An unwind segue is an action method that takes a UIStoryboardSegue parameter.
-  
-  @IBAction func categoryPickerDidPickCategory(segue: UIStoryboardSegue) {
-    // A storyboard connection was made from the prototype cell in the CategoryPickerViewController to that view controller's Exit button
-    // to engage this unwind segue.
-    
-    // Get the selected Category from the view controller that sent the segue - CategoryPickerViewController.
-    let controller = segue.sourceViewController as CategoryPickerViewController
-    categoryName = controller.selectedCategoryName
-    categoryLabel.text = categoryName
-  }
-*/
   //#####################################################################
   // MARK: - UIViewController
   
@@ -162,10 +146,15 @@ class BeerDetailViewController: UITableViewController {
     //--------------------
     // BEER RATING
     
+    let theRatingControl = ratingControl()
+    cellNameRatingImage.addSubview(theRatingControl)
+    
     if let bdRating = details?.rating {
-      let theRatingControl = ratingControl()
       theRatingControl.rating = Int(bdRating)
-      cellNameRatingImage.addSubview(theRatingControl)
+      
+    } else {
+      // Need this for ADD Mode.
+      theRatingControl.rating = 0
     }
     //--------------------
     // BEER IMAGE
@@ -242,7 +231,6 @@ class BeerDetailViewController: UITableViewController {
     if let amrc = amRatingCtl as? AMRatingControl {
       
       amrc.starSpacing = 5
-      //amrc.addTarget(self, action: "updateRating", forControlEvents: UIControlEvents.EditingChanged)
     }
     
     // This works here, but doing it in init:coder instead.
@@ -323,15 +311,6 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     // Use the UIImagePickerControllerEditedImage key to retrieve a UIImage object that contains the image after the Move and Scale operations on the original image.
     image = info[UIImagePickerControllerEditedImage] as! UIImage?
     
-    // THIS CODE WAS REPLACED WITH A didSet BLOCK FOR VARIABLE, image.
-    // Store the photo in the image instace variable for later use.
-    /*
-    if let image = image {
-    // Put the image in the Add Photo table view cell.
-    showImage(image)
-    }
-    */
-
     //------------------------------------------
     if let imageToDelete = currentBeer.beerDetails.image {
       ImageSaver.deleteImageAtPath(imageToDelete)

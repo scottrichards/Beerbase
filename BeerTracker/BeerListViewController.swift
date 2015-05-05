@@ -34,7 +34,7 @@ class BeerListViewController: UITableViewController {
   required init(coder aDecoder: NSCoder) {
     // Automatically invoked by UIKit as it loads the view controller from the storyboard.
     
-    amRatingCtl = AMRatingControl(location: CGPointMake(100, 10),
+    amRatingCtl = AMRatingControl(location: CGPointMake(190, 10),
                                 emptyImage: beerEmptyImage,
                                 solidImage: beerFullImage,
                               andMaxRating: 5)
@@ -59,6 +59,8 @@ class BeerListViewController: UITableViewController {
       let beerSelected = beers[indexPath!.row]
       controller!.currentBeer = beerSelected
       controller!.currentBeer.beerDetails = beerSelected.beerDetails
+      
+      controller!.navigationItem.rightBarButtonItems = []
       
     //------------------------------------------------------------------------------------
     } else if segue.identifier == "addBeer" {
@@ -103,8 +105,6 @@ class BeerListViewController: UITableViewController {
   // MARK: - Action Methods
   
   @IBAction func sortByControlChanged(sender: UISegmentedControl) {
-    //println("Segment changed: \(sender.selectedSegmentIndex)")
-    performSearch()
     
     switch sender.selectedSegmentIndex {
       
@@ -132,14 +132,6 @@ class BeerListViewController: UITableViewController {
     
     // Fetch records from Entity Beer using a MagicalRecord method.
     beers = Beer.findAllSortedBy(sortKey, ascending: ascending) as! [Beer]
-    
-    /*
-    let results = Beer.findAllSortedBy(sortKey, ascending: ascending) as? [Beer]
-    
-    if let beerRecords = results {
-      beers = beerRecords
-    }
-    */
   }
   //#####################################################################
   
@@ -208,6 +200,14 @@ extension BeerListViewController: UITableViewDataSource {
         
         // TODO: This gets executed but no images show up in the cell.
         cell.addSubview(amrc)
+        
+        /*
+        if let bdRating = details?.rating {
+          let theRatingControl = ratingControl()
+          theRatingControl.rating = Int(bdRating)
+          cellNameRatingImage.addSubview(theRatingControl)
+        }
+        */
 
       } else {
         amRatingCtl = cell.viewWithTag(20)
