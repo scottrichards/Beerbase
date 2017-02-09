@@ -8,7 +8,7 @@
 import Foundation
 import CoreData
 
-class Beer: NSManagedObject {
+@objc(Beer) class Beer: NSManagedObject {
   
   // Attributes
   @NSManaged var name: String

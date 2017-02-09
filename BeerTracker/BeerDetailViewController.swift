@@ -48,6 +48,9 @@ class BeerDetailViewController: UITableViewController {
   let beerEmptyImage: UIImage = UIImage(named: "beermug-empty")!
   let beerFullImage:  UIImage = UIImage(named: "beermug-full")!
   
+    // Data Model
+  var currentBeer: Beer!
+  
   //#####################################################################
   // MARK: - Initialization
   
@@ -76,6 +79,62 @@ class BeerDetailViewController: UITableViewController {
     //------------------------------------------
     beerNotesView.layer.borderColor = UIColor(white: 0.667, alpha: 0.500).cgColor
     beerNotesView.layer.borderWidth = 1.0
+    
+    if let beer = currentBeer {
+        // A beer exists.  EDIT Mode.
+        
+    } else {
+        // A beer does NOT exist.  ADD Mode.
+        
+        currentBeer = Beer.createEntity() as! Beer
+        currentBeer.name = ""
+    }
+    
+    let details: BeerDetails? = currentBeer.beerDetails
+    
+    if let bDetails = details {
+        // Beer Details exist.  EDIT Mode.
+    } else {
+        // Beer Details do NOT exist.  Either ADD Mode or EDIT Mode with a beer that has no details.
+        
+        currentBeer.beerDetails = BeerDetails.createEntity() as! BeerDetails
+    }
+    let cbName: String? = currentBeer.name
+    
+    if let bName = cbName {
+        beerNameTextField.text = bName
+    }
+    
+    // Note
+    if let bdNote = details?.note {
+        beerNotesView.text = bdNote
+    }
+    
+    // Rating
+    let theRatingControl = ratingControl()
+    cellNameRatingImage.addSubview(theRatingControl)
+    
+    if let bdRating = details?.rating {
+        theRatingControl.rating = Int(bdRating)
+        
+    } else {
+        // Need this for ADD Mode.
+        theRatingControl.rating = 0
+    }
+    
+    // Image
+    if let beerImagePath = details?.image {
+        let beerImage = UIImage(contentsOfFile: beerImagePath)
+        
+        if let bImage = beerImage {
+            showImage(bImage)
+        }
+    }
+    if currentBeer.name == "" {
+        title = "New Beer"
+    } else {
+        title = currentBeer.name
+    }
   }
   //#####################################################################
   // MARK: Responding to View Events
@@ -117,6 +176,7 @@ class BeerDetailViewController: UITableViewController {
   //         Third-party Core Data stack.
   
   func saveContext() {
+    NSManagedObjectContext.default().saveToPersistentStoreAndWait()
   }
   //#####################################################################
   // MARK: - Rating Control Methods
@@ -134,6 +194,7 @@ class BeerDetailViewController: UITableViewController {
   }
   //#####################################################################
   func updateRating() {
+    currentBeer.beerDetails.rating = ratingControl().rating as NSNumber?
   }
   //#####################################################################
 }
@@ -148,6 +209,7 @@ extension BeerDetailViewController: UITextFieldDelegate {
     
     if textField.text != "" {
       self.title       = textField.text
+        currentBeer.name = textField.text!
     }
   }
   //#####################################################################
@@ -162,6 +224,7 @@ extension BeerDetailViewController: UITextViewDelegate {
   func textViewDidEndEditing(_ textView: UITextView) {
     
     textView.resignFirstResponder()
+    currentBeer.beerDetails.note = textView.text
   }
   //#####################################################################
 }
@@ -191,6 +254,14 @@ extension BeerDetailViewController: UIImagePickerControllerDelegate, UINavigatio
     
     // Use the UIImagePickerControllerEditedImage key to retrieve a UIImage object that contains the image after the Move and Scale operations on the original image.
     image = info[UIImagePickerControllerEditedImage] as! UIImage?
+    
+    if let imageToDelete = currentBeer.beerDetails.image {
+        ImageSaver.deleteImageAtPath(imageToDelete)
+    }
+    
+    if ImageSaver.saveImageToDisk(image!, andToBeer: currentBeer) {
+        showImage(image!)
+    }
     
     //------------------------------------------
     // Refresh the table view to set the photo row to the proper height to accommodate a photo (or not).
