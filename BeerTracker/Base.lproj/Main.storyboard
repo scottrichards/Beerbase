@@ -2,6 +2,7 @@
 <document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="7702" systemVersion="14D136" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="Fct-6h-8N9">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="7701"/>
+        <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
         <!--Wender Beer-->
@@ -128,7 +129,7 @@
                                                     <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="calibratedWhite"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" fixedFrame="YES" text="Add beer notes." translatesAutoresizingMaskIntoConstraints="NO" id="U9r-a5-cpb">
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="Add notes" translatesAutoresizingMaskIntoConstraints="NO" id="U9r-a5-cpb">
                                                     <rect key="frame" x="18" y="34" width="568" height="111"/>
                                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
@@ -138,6 +139,12 @@
                                                     </connections>
                                                 </textView>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="U9r-a5-cpb" firstAttribute="leading" secondItem="X7k-ed-bKX" secondAttribute="leadingMargin" constant="10" id="4G1-qj-2uO"/>
+                                                <constraint firstItem="U9r-a5-cpb" firstAttribute="top" secondItem="X7k-ed-bKX" secondAttribute="topMargin" constant="26" id="Xed-Ks-Oeo"/>
+                                                <constraint firstItem="U9r-a5-cpb" firstAttribute="bottom" secondItem="X7k-ed-bKX" secondAttribute="bottomMargin" id="ZF1-Xj-1T5"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="U9r-a5-cpb" secondAttribute="trailing" constant="6" id="jl2-gb-7Ov"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                     </tableViewCell>
                                 </cells>
@@ -162,7 +169,6 @@
                         <outlet property="beerNotesView" destination="U9r-a5-cpb" id="YhE-Wa-PF5"/>
                         <outlet property="cellNameRatingImage" destination="DRD-49-5DV" id="k8j-FF-vKt"/>
                         <outlet property="imageView" destination="tTk-bN-jdd" id="AqU-jn-Eb1"/>
-                        <segue destination="MK2-75-q3c" kind="show" identifier="showImage" id="9S9-1K-Cjh"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lxX-pC-Mkm" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -174,33 +180,6 @@
                 </tapGestureRecognizer>
             </objects>
             <point key="canvasLocation" x="1924" y="404"/>
-        </scene>
-        <!--Photo View Controller-->
-        <scene sceneID="wX1-Jh-fSF">
-            <objects>
-                <viewController id="MK2-75-q3c" customClass="PhotoViewController" customModule="BeerTracker" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="oQN-gg-cxW"/>
-                        <viewControllerLayoutGuide type="bottom" id="TAa-AI-59J"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="T3u-Hb-eTs">
-                        <rect key="frame" x="0.0" y="0.0" width="600" height="536"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="GR9-ya-ID6">
-                                <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
-                            </imageView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                    </view>
-                    <extendedEdge key="edgesForExtendedLayout"/>
-                    <connections>
-                        <outlet property="imageView" destination="GR9-ya-ID6" id="YcF-xk-OxS"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Xjq-KC-qw9" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="2694" y="404"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="CBf-ru-ClH">

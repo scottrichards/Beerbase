@@ -2,8 +2,7 @@
 //  BeerTracker-BridgingHeader.h
 //  BeerTracker
 //
-//  Created by Ed on 4/25/15.
-//  Copyright (c) 2015 Anros Applications, LLC. All rights reserved.
+//  Copyright (c) 2015 Ray Wenderlich. All rights reserved.
 //
 
 #ifndef BeerTracker_BeerTracker_BridgingHeader_h

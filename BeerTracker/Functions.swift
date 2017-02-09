@@ -2,8 +2,7 @@
 //  Functions.swift
 //  BeerTracker
 //
-//  Created by Ed on 4/29/15.
-//  Copyright (c) 2015 Anros Applications, LLC. All rights reserved.
+//  Copyright (c) 2015 Ray Wenderlich. All rights reserved.
 //
 
 import Foundation
@@ -17,7 +16,7 @@ import Foundation
 
 // Assign to a global constant a path to the app's Documents directory.
 let applicationDocumentsDirectory: String = {
-  let paths = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true) as! [String]
+  let paths = NSSearchPathForDirectoriesInDomains(.documentDirectory, .userDomainMask, true) 
   return paths[0]
   
   // Using "()" after the Closure to assign the result of the closure code to applicationDocumentsDirectory.
